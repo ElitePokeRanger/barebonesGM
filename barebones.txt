@@ -1,0 +1,12 @@
+"barebones"
+{
+	"base"		"base"
+	"title"		"barebones"
+	"maps"		"^gm_"
+	"menusystem"	"1"
+
+	"settings"
+	{
+	
+	}
+}
