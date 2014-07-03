@@ -3,12 +3,12 @@ AddCSLuaFile( "shared.lua" );
 include( 'shared.lua' );
 
 
-function GM:PlayerInitialSpawn(ply)
+function GM:PlayerInitialSpawn(ply) -- Called when the player first joins the game.
 	local teamID = team.BestAutoJoinTeam();
 	ply:SetTeam(teamID);
 end	
 
-function GM:PlayerLoadout( ply )
+function GM:PlayerLoadout( ply ) -- Called when the player spawns.
 if(ply:Team() != TEAM_SPEC) then
 	ply:StripWeapons();
 	if(ply:Team() == TEAM_REBELS) then
@@ -29,19 +29,19 @@ end
 
 end	
 
-function GM:DoPlayerDeath( ply, attacker, dmg )
+function GM:DoPlayerDeath( ply, attacker, dmg ) -- Called on player death.
 	ply:CreateRagdoll()
 	ply:SetTeam(3);
 	checkForEmptyTeams();
 end
 
-function GM:PlayerDisconnected( ply )
+function GM:PlayerDisconnected( ply ) --Called when the player disconnects.
 	checkForEmptyTeams();
 end
 
 
 // Custom functions
-function restartGame()
+function restartGame() -- Prints restart message to all then changes everyone's teams and respawns them.
 		PrintMessage(3, "Restarting game...");
 		TeamHasWon = false;  
 		for k,v in pairs(player.GetAll()) do
@@ -54,7 +54,7 @@ function restartGame()
 		end
 end
 
-function checkForEmptyTeams()
+function checkForEmptyTeams() --If one of the teams has no players(which happens when you die in bb_suddendeath), the other team wins the round.
 	if( table.getn(team.GetPlayers(1)) == 0 ) and (!TeamHasWon) then
 		PrintMessage(4, "The team "..team.GetName(2).." has won!");
 		TeamHasWon = true;
