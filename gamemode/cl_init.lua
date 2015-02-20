@@ -4,7 +4,7 @@ include( 'shared.lua' );
 
 
 function GM:HUDShouldDraw( name )
-    if ( name == "CHudHealth" or name == "CHudBattery" or name == "CHudAmmo" or name == "CHudSecondaryAmmo" or name == "CHudDeathNotice") then --Hides Healthbar,Battery,Ammo,Secondary Ammo(grenade launcher, pulse balls, etc), DeathNotice(kills at top right)
+    if ( name == "CHudHealth" or name == "CHudBattery" or name == "CHudAmmo" or name == "CHudSecondaryAmmo" or name == "CHudDeathNotice") then
         return false
     end
     return true
@@ -27,6 +27,9 @@ surface.CreateFont("Default", {
 	outline = false
 })
 
+
+--Draw HUD
+
 function GM:HUDPaint()
 self.BaseClass:HUDPaint()
 local ply = LocalPlayer()
@@ -35,7 +38,9 @@ local HP = LocalPlayer():Health()
 surface.SetTextPos( 50, 600)
 surface.SetFont( "Default" )
 
-if(ply:Team() != TEAM_SPEC) then --If player is spectating, then show "SPEC" instead of an HP bar, or if they have 0 HP or less, show "DEAD" instead of the HP bar.
+--HP
+
+if(ply:Team() != TEAM_SPEC) then
 if(HP > 0) then
 	if(HP > 70) then
 	surface.SetTextColor(20,180,50,255)
@@ -64,7 +69,23 @@ surface.DrawText("SPEC")
 
 end
 
-if(TeamHasWon) then --If a team has won, show at the top center of the screen "[teamname] has won!" (also possible: 0-0 type scoreboard.)
+if(ply:Team() != TEAM_SPEC) then
+
+
+local wep = ply:GetActiveWeapon();
+local clip = wep:Clip1();
+local reserve = ply:GetAmmoCount(wep:GetPrimaryAmmoType());
+
+if(clip > -1) then
+surface.SetTextColor(73, 110, 255, 255);
+surface.SetTextPos( 1000, 600 );
+
+surface.DrawText(clip.."/"..reserve);
+end
+end
+
+
+if(TeamHasWon) then
 	if(WinningTeam == TEAM_COMBINE) then
 		//surface.SetTextColor(20,180,50,255)
 		//surface.SetTextPos()

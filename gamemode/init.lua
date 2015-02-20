@@ -36,12 +36,13 @@ function GM:DoPlayerDeath( ply, attacker, dmg ) -- Called on player death.
 end
 
 function GM:PlayerDisconnected( ply ) --Called when the player disconnects.
-	checkForEmptyTeams();
+	PrintMessage(3, ply:GetName().." has disconnected.");
+	timer.Simple(.1, checkForEmptyTeams);
 end
 
 
 // Custom functions
-function restartGame() -- Prints restart message to all then changes everyone's teams and respawns them.
+function restartGame() 
 		PrintMessage(3, "Restarting game...");
 		TeamHasWon = false;  
 		for k,v in pairs(player.GetAll()) do
@@ -54,7 +55,7 @@ function restartGame() -- Prints restart message to all then changes everyone's 
 		end
 end
 
-function checkForEmptyTeams() --If one of the teams has no players(which happens when you die in bb_suddendeath), the other team wins the round.
+function checkForEmptyTeams()
 	if( table.getn(team.GetPlayers(1)) == 0 ) and (!TeamHasWon) then
 		PrintMessage(4, "The team "..team.GetName(2).." has won!");
 		TeamHasWon = true;
